@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Duel Summary</title>
+    <link rel="stylesheet" href="summary.css">
+</head>
+<body>
+
+    <div id="background"></div>
+
+    <div class="summary-container">
+        <h1 class="summary-title">DUEL SUMMARY</h1>
+
+        <div class="result-text" id="resultText"></div>
+
+        <div class="players">
+            <p id="winnerName"></p>
+            <p id="loserName"></p>
+            <p id="finalHP"></p>
+        </div>
+
+        <div class="key-events">
+            <h2>Key Events</h2>
+            <ul id="eventList"></ul>
+        </div>
+
+        <div id="wagerSection" class="wager-section" style="display:none;">
+            <h2>Wager Outcome</h2>
+            <div class="coin-container"></div>
+            <p id="wagerText"></p>
+        </div>
+
+        <button onclick="returnToMenu()" class="menu-button">Return to Main Menu</button>
+    </div>
+
+    <script src="summary.js"></script>
+
+</body>
+</html>
