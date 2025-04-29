@@ -1,0 +1,12 @@
+{
+  "name": "duel-summary-ui",
+  "version": "1.0.0",
+  "description": "Simple Duel Summary UI for DayZ CCG",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
