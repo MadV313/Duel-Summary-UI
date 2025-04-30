@@ -1,3 +1,5 @@
+/* summary.css */
+
 body {
     margin: 0;
     padding: 0;
@@ -19,40 +21,58 @@ body {
     text-align: center;
     color: white;
     padding: 50px 20px;
+    max-width: 800px;
+    margin: auto;
+    background: rgba(0, 0, 0, 0.65);
+    border-radius: 15px;
+    box-shadow: 0 0 25px rgba(255, 255, 255, 0.2);
+    animation: fadeIn 1.5s ease forwards;
 }
 
 .summary-title {
     font-size: 48px;
-    animation: fadeIn 1s ease forwards;
+    margin-bottom: 10px;
+    animation: fadeIn 1.2s ease forwards;
 }
 
 .result-text {
     margin-top: 20px;
-    font-size: 36px;
+    font-size: 32px;
     font-weight: bold;
+    color: #FFD700;
     text-shadow: 0 0 10px rgba(255,255,255,0.7);
+    animation: pulse 2s infinite;
 }
 
-.players p, .key-events h2, .wager-section h2, .wager-section p {
+.players p {
     margin: 10px 0;
     font-size: 20px;
 }
 
-.key-events ul {
+.key-events h2,
+.wager-section h2 {
+    margin-top: 30px;
+    font-size: 24px;
+    text-decoration: underline;
+}
+
+#eventList {
     list-style: none;
     padding: 0;
 }
 
-.key-events li {
+#eventList li {
     margin: 5px 0;
+    font-size: 18px;
+    animation: fadeIn 0.8s ease-in-out;
 }
 
 .wager-section {
-    margin-top: 20px;
+    margin-top: 25px;
 }
 
 .coin-container {
-    margin: 10px auto;
+    margin: 12px auto;
     width: 48px;
     height: 48px;
     background: url('data:image/gif;base64,R0lGODlhEAAQAKIAAP///wAAAMLCwkJCQv///wAAAAAAAAAAACH5BAAAAAAALAAAAAAQABAAAAIklI+py+0Po5y02ouzPgUAOw==') no-repeat center;
@@ -60,9 +80,14 @@ body {
     animation: spin 2s linear infinite;
 }
 
+#wagerText {
+    margin-top: 10px;
+    font-size: 18px;
+}
+
 .menu-button {
     margin-top: 40px;
-    padding: 10px 30px;
+    padding: 12px 30px;
     font-size: 20px;
     background-color: #2e8b57;
     color: white;
@@ -77,9 +102,15 @@ body {
     transform: scale(1.05);
 }
 
+/* Animations */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-20px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.75; }
 }
 
 @keyframes spin {
