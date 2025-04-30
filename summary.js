@@ -1,58 +1,54 @@
-// Example data for now; you will replace this with your real duel results
-const duelSummary = {
-    result: 'Victory', // or 'Defeat'
-    winner: 'PlayerOne',
-    loser: 'PlayerTwo',
-    finalHP: 120,
-    cardsStolen: 3,
-    trapsTriggered: 2,
-    combosTriggered: 1,
-    wagered: true,
-    wagerWinnerCoins: 500,
-    wagerLoserCoins: 500
-};
+// summary.js
 
-function loadSummary() {
-    const resultText = document.getElementById('resultText');
-    const winnerName = document.getElementById('winnerName');
-    const loserName = document.getElementById('loserName');
-    const finalHP = document.getElementById('finalHP');
+document.addEventListener('DOMContentLoaded', () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const duelId = urlParams.get('duelId');
+
+    if (!duelId) {
+        document.getElementById('resultText').textContent = 'Duel ID not found.';
+        return;
+    }
+
+    fetch(`https://duel-bot-backend-production.up.railway.app/summary/${duelId}`)
+        .then(res => res.json())
+        .then(data => {
+            if (data.error) throw new Error(data.error);
+            displaySummary(data);
+        })
+        .catch(err => {
+            console.error("Failed to load summary:", err);
+            document.getElementById('resultText').textContent = 'Summary load failed.';
+        });
+});
+
+function displaySummary(summary) {
+    const { players, winner, events, wager } = summary;
+
+    const winnerName = players[winner]?.discordName || 'Winner';
+    const loserKey = winner === 'player1' ? 'player2' : 'player1';
+    const loserName = players[loserKey]?.discordName || 'Opponent';
+
+    document.getElementById('resultText').textContent = `${winnerName.toUpperCase()} WINS THE DUEL!`;
+    document.getElementById('winnerName').textContent = `Winner: ${winnerName}`;
+    document.getElementById('loserName').textContent = `Loser: ${loserName}`;
+    document.getElementById('finalHP').textContent = `Final HP: ${players[winner]?.hp || 0}`;
+
     const eventList = document.getElementById('eventList');
-    const wagerSection = document.getElementById('wagerSection');
-    const wagerText = document.getElementById('wagerText');
-
-    resultText.textContent = duelSummary.result.toUpperCase();
-    resultText.style.color = (duelSummary.result === 'Victory') ? '#00FF00' : '#FF3333';
-
-    winnerName.textContent = `Winner: ${duelSummary.winner}`;
-    loserName.textContent = `Loser: ${duelSummary.loser}`;
-    finalHP.textContent = `Final HP: ${duelSummary.finalHP}`;
-
-    if (duelSummary.cardsStolen > 0) {
-        const li = document.createElement('li');
-        li.textContent = `Cards Stolen: x${duelSummary.cardsStolen}`;
-        eventList.appendChild(li);
-    }
-    if (duelSummary.trapsTriggered > 0) {
-        const li = document.createElement('li');
-        li.textContent = `Traps Triggered: x${duelSummary.trapsTriggered}`;
-        eventList.appendChild(li);
-    }
-    if (duelSummary.combosTriggered > 0) {
-        const li = document.createElement('li');
-        li.textContent = `Combos Triggered: x${duelSummary.combosTriggered}`;
-        eventList.appendChild(li);
+    if (Array.isArray(events)) {
+        events.forEach(event => {
+            const li = document.createElement('li');
+            li.textContent = event;
+            eventList.appendChild(li);
+        });
     }
 
-    if (duelSummary.wagered) {
-        wagerSection.style.display = 'block';
-        wagerText.textContent = `${duelSummary.winner} gained +${duelSummary.wagerWinnerCoins} coins\n${duelSummary.loser} lost -${duelSummary.wagerLoserCoins} coins`;
+    if (wager) {
+        document.getElementById('wagerSection').style.display = 'block';
+        document.getElementById('wagerText').textContent =
+            `${winnerName} gained +${wager.amount} coins.`;
     }
 }
 
 function returnToMenu() {
-    window.location.href = "index.html"; // You can adjust this path
+    window.location.href = '/';
 }
-
-// Load on page start
-window.onload = loadSummary;
