@@ -41,5 +41,16 @@
   </div>
 
   <script src="summary.js"></script>
+  <script>
+    fetch('/data/player_data.json')
+      .then(res => res.json())
+      .then(stats => {
+        console.log('Loaded player stats:', stats);
+        // You can add logic here to display win/loss info in the summary screen if desired
+      })
+      .catch(err => {
+        console.error('Failed to load player_data.json:', err);
+      });
+  </script>
 </body>
 </html>
