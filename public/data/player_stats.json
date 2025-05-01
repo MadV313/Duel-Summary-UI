@@ -1,0 +1,17 @@
+{
+  "123456789012345678": {
+    "discordName": "PlayerOne",
+    "wins": 3,
+    "losses": 1
+  },
+  "876543210987654321": {
+    "discordName": "PlayerTwo",
+    "wins": 1,
+    "losses": 4
+  },
+  "102938475610293847": {
+    "discordName": "SurvivorZ",
+    "wins": 5,
+    "losses": 2
+  }
+}
