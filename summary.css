@@ -5,6 +5,7 @@ body {
     padding: 0;
     overflow-x: hidden;
     font-family: Arial, sans-serif;
+    background: #000;
 }
 
 #background {
@@ -33,6 +34,17 @@ body {
     font-size: 48px;
     margin-bottom: 10px;
     animation: fadeIn 1.2s ease forwards;
+}
+
+.victory-banner {
+    font-size: 32px;
+    color: #00ff00;
+    margin-top: 10px;
+    animation: pulse 2s infinite;
+}
+
+.victory-banner.hidden {
+    display: none;
 }
 
 .result-text {
@@ -71,6 +83,10 @@ body {
     margin-top: 25px;
 }
 
+.wager-section.hidden {
+    display: none;
+}
+
 .coin-container {
     margin: 12px auto;
     width: 48px;
@@ -85,8 +101,13 @@ body {
     font-size: 18px;
 }
 
-.menu-button {
-    margin-top: 40px;
+.summary-buttons {
+    margin-top: 30px;
+}
+
+.menu-button,
+.replay-button {
+    margin: 10px;
     padding: 12px 30px;
     font-size: 20px;
     background-color: #2e8b57;
@@ -97,7 +118,8 @@ body {
     transition: transform 0.2s, background-color 0.2s;
 }
 
-.menu-button:hover {
+.menu-button:hover,
+.replay-button:hover {
     background-color: #3cb371;
     transform: scale(1.05);
 }
