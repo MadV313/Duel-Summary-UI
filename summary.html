@@ -28,7 +28,7 @@
       <ul id="eventList"></ul>
     </div>
 
-    <div id="wagerSection" class="wager-section" style="display:none;">
+    <div id="wagerSection" class="wager-section hidden">
       <h2>Wager Outcome</h2>
       <div class="coin-container"></div>
       <p id="wagerText"></p>
@@ -40,17 +40,6 @@
     </div>
   </div>
 
-  <script src="summary.js"></script>
-  <script>
-    fetch('/data/player_data.json')
-      .then(res => res.json())
-      .then(stats => {
-        console.log('Loaded player stats:', stats);
-        // You can add logic here to display win/loss info in the summary screen if desired
-      })
-      .catch(err => {
-        console.error('Failed to load player_data.json:', err);
-      });
-  </script>
+  <script src="summaryLoader.js"></script>
 </body>
 </html>
