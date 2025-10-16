@@ -5,6 +5,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Duel Summary</title>
   <link rel="stylesheet" href="summary.css"/>
+
+  <!-- 🔧 Token/API bootstrap for this page and summaryLoader.js -->
+  <script>
+    (function () {
+      const qs = new URLSearchParams(location.search);
+      const tokenFromUrl = qs.get('token') || '';
+      const apiFromUrl   = (qs.get('api') || '').replace(/\/+$/, '');
+
+      // Persist & restore player token
+      let token = tokenFromUrl;
+      try {
+        if (!token) token = localStorage.getItem('sv13.token') || '';
+        if (tokenFromUrl) localStorage.setItem('sv13.token', tokenFromUrl);
+      } catch {}
+
+      // Expose to any scripts
+      window.PLAYER_TOKEN = token;
+      window.API_BASE = apiFromUrl || '/api';
+      // Optional: help scripts build same-origin links back to the UI root
+      window.UI_BASE = (location.origin + location.pathname).replace(/\/[^\/]*$/, '');
+    })();
+  </script>
+
+  <style>
+    /* tiny style for the audio toggle */
+    .audio-toggle {
+      position: fixed;
+      left: 16px;
+      bottom: 16px;
+      z-index: 9999;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      border: 1px solid #00ffff;
+      border-radius: 999px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      user-select: none;
+      backdrop-filter: blur(2px);
+    }
+    .audio-toggle:hover { box-shadow: 0 0 10px #00ffff; }
+  </style>
 </head>
 <body>
 
@@ -39,6 +81,75 @@
       <button onclick="replayDuel()" class="replay-button">Replay Duel</button>
     </div>
   </div>
+
+  <!-- 🔊 Background music -->
+  <audio
+    id="summary-bgm"
+    src="audio/bg/Follow the Trail.mp3"
+    autoplay
+    muted
+    playsinline
+    loop
+    preload="auto"></audio>
+  <button id="audioToggle" class="audio-toggle" aria-label="Mute background music">🔇</button>
+
+  <script>
+    // Background music unlock + preference
+    (function setupSummaryMusic() {
+      const audio = document.getElementById('summary-bgm');
+      const btn   = document.getElementById('audioToggle');
+      if (!audio || !btn) return;
+
+      const STORE_KEY = 'sv13_summary_bgm.muted';
+
+      // Restore saved preference
+      try {
+        const stored = localStorage.getItem(STORE_KEY);
+        if (stored !== null) audio.muted = (stored === 'true');
+      } catch {}
+
+      function updateBtn() {
+        btn.textContent = audio.muted ? '🔇' : '🔊';
+        btn.setAttribute('aria-label', audio.muted ? 'Play background music' : 'Mute background music');
+      }
+      updateBtn();
+
+      // Best-effort autoplay while muted
+      audio.play().catch(() => {});
+
+      // Unlock on first user gesture; if user hasn't explicitly muted, unmute
+      const unlock = () => {
+        audio.play().catch(() => {});
+        try {
+          if (localStorage.getItem(STORE_KEY) !== 'true') {
+            audio.muted = false;
+            updateBtn();
+          }
+        } catch {}
+        cleanupUnlock();
+      };
+      function cleanupUnlock() {
+        window.removeEventListener('pointerdown', unlock, opt);
+        window.removeEventListener('keydown', unlock);
+        document.removeEventListener('visibilitychange', vis);
+      }
+      const opt = { passive: true };
+      window.addEventListener('pointerdown', unlock, opt);
+      window.addEventListener('keydown', unlock);
+
+      // Safari quirks: retry play on visibility change
+      const vis = () => { if (!document.hidden) audio.play().catch(() => {}); };
+      document.addEventListener('visibilitychange', vis);
+
+      // Manual toggle
+      btn.addEventListener('click', () => {
+        audio.muted = !audio.muted;
+        try { localStorage.setItem(STORE_KEY, String(audio.muted)); } catch {}
+        updateBtn();
+        audio.play().catch(() => {});
+      });
+    })();
+  </script>
 
   <script src="summaryLoader.js"></script>
 </body>
