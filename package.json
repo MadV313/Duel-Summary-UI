@@ -1,12 +1,16 @@
 {
   "name": "duel-summary-ui",
   "version": "1.0.0",
-  "description": "Simple Duel Summary UI for DayZ CCG",
-  "main": "server.js",
+  "private": true,
+  "description": "Summary UI with /api proxy and BG music",
   "scripts": {
     "start": "node server.js"
   },
   "dependencies": {
-    "express": "^4.18.2"
+    "express": "^4.19.2",
+    "http-proxy-middleware": "^3.0.2"
+  },
+  "engines": {
+    "node": ">=18.17"
   }
 }
